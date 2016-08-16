@@ -60,13 +60,13 @@ router.get('/:keyword/page/:page/count/:count', function (req, res) {
     // }
 
     // request
-    request(options, function (err, req, res) {
+    request(options, function (err, res, body) {
         //Find something request
         // 1.判断请求是否成功。 {1.1成功，解析返回内容中的书籍数。{1.1.1有书籍，接着解析。1.1.2无书籍，值为0，返回NO_BOOK。} 1.2失败，返回请求失败。}
-        if (!err && req.statusCode == 200) {
+        if (!err && res.statusCode == 200) {
 
             //cherrio params
-            var $ = cherrio.load(res);
+            var $ = cherrio.load(body);
             var booksTotal = $('#ctl00_ContentPlaceHolder1_countlbl').text();
             // 1.1判断
             if (booksTotal != "0") {

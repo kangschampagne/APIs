@@ -17,6 +17,7 @@ app.set('view engine', 'jade');
 //Library routes
 var library = {};
 library.library = require('./routes/jmu/library/library');
+library.bookInfo = require('./routes/jmu/library/bookinfo');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -31,6 +32,7 @@ app.use('/users', users);
 
 //Library routes
 app.use('/jmu/library/search', library.library);
+app.use('/jmu/library/book', library.bookInfo);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
