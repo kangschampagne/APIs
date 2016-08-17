@@ -1,7 +1,8 @@
 {
   "name": "jmu",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
+  "description" : "APIs",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -16,5 +17,10 @@
     "request" : "~2.74.0",
     "serve-favicon": "~2.3.0",
     "encode-gb2312" : "0.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kangschampagne/APIs.git"
+  },
+  "author": "Kagen"
 }
