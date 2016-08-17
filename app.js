@@ -20,6 +20,9 @@ library.library = require('./routes/jmu/library/library');
 library.bookInfo = require('./routes/jmu/library/bookinfo');
 library.login = require('./routes/jmu/library/login');
 library.userinfo = require('./routes/jmu/library/user/userinfo');
+library.borrowed = require('./routes/jmu/library/user/borrowed');
+library.bookshelf = require('./routes/jmu/library/user/bookshelf');
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -37,6 +40,8 @@ app.use('/jmu/library/search', library.library);
 app.use('/jmu/library/book', library.bookInfo);
 app.use('/jmu/library/login', library.login);
 app.use('/jmu/library/userinfo', library.userinfo);
+app.use('/jmu/library/borrowed', library.borrowed);
+app.use('/jmu/library/bookshelf', library.bookshelf);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
