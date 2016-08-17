@@ -31,7 +31,7 @@ var options = {
 var book = {};
 
 router.get('/', function (req, res) {
-    res.render("NO_BOOK_INFO");
+    res.render("NO_BOOK_ID");
 });
 
 router.get('/:bookid', function (req, res) {
@@ -51,23 +51,23 @@ router.get('/:bookid', function (req, res) {
                 //
                 var bookcardinfo = $("#ctl00_ContentPlaceHolder1_bookcardinfolbl")['0'];
                 book.bookCard = bookcardinfo.children[0].data.split("．")[0].trim();
-                console.log(bookcardinfo.children.length);
+                // console.log(bookcardinfo.children.length); //<br>标签个数
                 //
                 //
                 var i_Arry = new Array();
                 for (i = 0; i < bookcardinfo.children.length; i++) {
                     if (bookcardinfo.children[i].type == 'text'
                         && bookcardinfo.children[i].next.name == 'br'
-                        // && bookcardinfo.children[i].next.type == 'tag'
+                    // && bookcardinfo.children[i].next.type == 'tag'
                     ) {
                         i_Arry.push(i);
-                        console.log(bookcardinfo.children[i].data + i);
+                        // console.log(bookcardinfo.children[i].data + i);
                     }
                 }
                 try {
-                    book.bookIntro = bookcardinfo.children[i_Arry[i_Arry.length-2]].data.trim();
-                    book.ISBN = bookcardinfo.children[i_Arry[i_Arry.length-1]].data.split("ISBN")[1].split('：')[0];
-                }catch (err) {
+                    book.bookIntro = bookcardinfo.children[i_Arry[i_Arry.length - 2]].data.trim();
+                    book.ISBN = bookcardinfo.children[i_Arry[i_Arry.length - 1]].data.split("ISBN")[1].split('：')[0];
+                } catch (err) {
                     book.statusMsg = "INFORMATION_LACK";
                 }
                 //
@@ -92,6 +92,7 @@ router.get('/:bookid', function (req, res) {
                 //
 
             } else {
+                book = {};//BUG_解决数据残留。
                 book.status = "false";
                 book.statusMsg = "SEARCH_NOT_FOUND";
             }
