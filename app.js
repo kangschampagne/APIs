@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//_maxListeners
+require('events').EventEmitter.prototype._maxListeners = 15;
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -23,6 +26,11 @@ library.userinfo = require('./routes/jmu/library/user/userinfo');
 library.borrowed = require('./routes/jmu/library/user/borrowed');
 library.bookshelf = require('./routes/jmu/library/user/bookshelf');
 
+//Amoy_Bus
+var amoyBus = {};
+amoyBus.linequery = require('./routes/amoy/bus/linequery');
+amoyBus.changequery = require('./routes/amoy/bus/changequery');
+amoyBus.linedetailquery = require('./routes/amoy/bus/linedetailquery');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -42,6 +50,11 @@ app.use('/jmu/library/login', library.login);
 app.use('/jmu/library/userinfo', library.userinfo);
 app.use('/jmu/library/borrowed', library.borrowed);
 app.use('/jmu/library/bookshelf', library.bookshelf);
+
+//amoyBus
+app.use('/amoybus/line', amoyBus.linequery);
+app.use('/amoybus/change', amoyBus.changequery);
+app.use('/amoybus/detail', amoyBus.linedetailquery);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
