@@ -24,7 +24,7 @@ var userinfo = {};
 router.get('/', function (req, res) {
 
     var cookie = req.query;
-    cookie.loginCookie = "AQIC5wM2LY4SfczSFfwn2C2JaS8tYpeNy0E6TM4jEHDlZo8%3d%40AAJTSQACMDI%3d%23";
+    cookie.loginCookie = "AQIC5wM2LY4SfcyFFs3PFvDYqX3%2foQxlWsyJYB2uS0bf60U%3d%40AAJTSQACMDE%3d%23";
     var url = "http://smjslib.jmu.edu.cn/user/userinfo.aspx";
 
     //定制headers  //参考资料 https://www.npmjs.com/package/request
