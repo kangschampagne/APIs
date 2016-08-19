@@ -1,5 +1,5 @@
 {
-  "name": "jmu",
+  "name": "APIs",
   "version": "1.0.0",
   "private": false,
   "description" : "APIs",
@@ -16,7 +16,8 @@
     "morgan": "~1.7.0",
     "request" : "~2.74.0",
     "serve-favicon": "~2.3.0",
-    "encode-gb2312" : "0.0.2"
+    "encode-gb2312" : "~0.0.2",
+    "urlencode" : "~1.1.0"
   },
   "repository": {
     "type": "git",
