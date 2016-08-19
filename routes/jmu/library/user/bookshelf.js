@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
 router.get('/page/:page', function (req, res) {
     var page = req.params.page;
     var cookie = req.query;
-    cookie.loginCookie = "AQIC5wM2LY4Sfcy0mdUOZRihB3WLhQIjv6XdVhJUMTio74Y%3d%40AAJTSQACMDI%3d%23";
+    cookie.loginCookie = "AQIC5wM2LY4SfcyFFs3PFvDYqX3%2foQxlWsyJYB2uS0bf60U%3d%40AAJTSQACMDE%3d%23";
     var url = "http://smjslib.jmu.edu.cn/user/mybookshelf.aspx?page=" + page;
 
     //定制headers  //参考资料 https://www.npmjs.com/package/request
