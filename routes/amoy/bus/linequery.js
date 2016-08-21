@@ -42,6 +42,7 @@ router.get('/:line', function (req, res) {
     var url = "http://mybus.xiamentd.com/LineQuery?line=" + linebus;
     options.url = url;
 
+    var _res = res;
     request(options, function (err, res, body) {
         var $ = cherrio.load(body);
         if (!err && res.statusCode == 200) {
@@ -62,7 +63,7 @@ router.get('/:line', function (req, res) {
                     // lineId
                     linelist.lineId = linelists.split('?lineId=')[1].split('&')[0];
                     //direction
-                    linelist.direction = linelists.split('&direction=')[1];
+                    linelist.direction = linelists.split('&direction=')[1].substring(0,1);
 
                     //detail
                     var detail = {};
@@ -90,9 +91,9 @@ router.get('/:line', function (req, res) {
             amoyline.lineStatus = "fail";
             amoyline.lineMsg = "SEVER_ERROR";
         }
+        _res.jsonp(amoyline);
+    });
 
-    })
-    res.jsonp(amoyline);
 });
 
 

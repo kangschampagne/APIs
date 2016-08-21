@@ -49,6 +49,7 @@ router.get('/:lineId/:direction', function (req, res) {
     console.log("lineId:%d direction:%d", lineId, direction);
     var url = "http://mybus.xiamentd.com/LineDetailQuery?lineId=" + lineId + "&direction=" + direction;
     options.url = url;
+    var _res = res;
     //判断direction值是否正确
     if ((lineId != "") && (direction == "1") || (direction == "2")) {
         linedetail.detailStatus = "success";
@@ -147,6 +148,8 @@ router.get('/:lineId/:direction', function (req, res) {
                 linedetail.detailStatus = "fail";
                 linedetail.detailMsg = "SEVER_ERROR";
             }
+
+            _res.status(200).jsonp(linedetail);
         });
 
     }
@@ -156,7 +159,7 @@ router.get('/:lineId/:direction', function (req, res) {
         linedetail.detailMsg = "ERROR_LINE_ID_OR_DIRECTION";
     }
 
-    res.status(200).jsonp(linedetail);
+    // res.status(200).jsonp(linedetail);
 });
 
 
