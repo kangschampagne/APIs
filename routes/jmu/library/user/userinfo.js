@@ -24,12 +24,13 @@ var userinfo = {};
 router.get('/', function (req, res) {
 
     var cookie = req.query;
-    cookie.loginCookie = "AQIC5wM2LY4SfcyFFs3PFvDYqX3%2foQxlWsyJYB2uS0bf60U%3d%40AAJTSQACMDE%3d%23";
+    var original_loginCookie = req.originalUrl.split("loginCookie=")[1].split("&")[0];
+    // cookie.loginCookie = "AQIC5wM2LY4Sfczv9XIBA5di6xOyvqZSzq7Fufo%2bRMn%2fMfk%3d%40AAJTSQACMDI%3d%23";
     var url = "http://smjslib.jmu.edu.cn/user/userinfo.aspx";
 
     //定制headers  //参考资料 https://www.npmjs.com/package/request
     var j = request.jar();
-    var loginCookie = request.cookie('iPlanetDirectoryPro=' + cookie.loginCookie);
+    var loginCookie = request.cookie('iPlanetDirectoryPro=' + original_loginCookie);
     j.setCookie(loginCookie, url);
 
     var options = {
@@ -40,6 +41,7 @@ router.get('/', function (req, res) {
             "Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6"
         }
     };
+    var _res = res;
     //如果loginCookie = "" 不执行request
     if (cookie.loginCookie != "") {
         request(options, function (err, res, body) {
@@ -86,13 +88,15 @@ router.get('/', function (req, res) {
                 userinfo.userinfoStatus = "fail";
                 userinfo.userinfoMsg = "SEVER_ERROR";
             }
+            _res.jsonp(userinfo);
         });
     }else {
         userinfo.userinfoStatus = "fail";
         userinfo.userinfoMsg = "USER_COOKIE_NULL";
+        // _res.jsonp(userinfo);
     }
 
-    res.jsonp(userinfo);
+
 });
 
 module.exports = router;

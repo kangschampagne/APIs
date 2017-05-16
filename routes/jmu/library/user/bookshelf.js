@@ -6,20 +6,20 @@ var router = express.Router();
 
 var bookshelf = {};
 
-bookshelf = {
-    shelfStatus : "",
-    shelfMsg : "",
-    pageTotal : "",
-    pageCurrent : "",
-    shelfList : [
-        {
-            No : "",
-            bookId : "",
-            name : "",
-            addtime : "",
-        }
-    ]
-};
+// bookshelf = {
+//     shelfStatus: "",
+//     shelfMsg: "",
+//     pageTotal: "",
+//     pageCurrent: "",
+//     shelfList: [
+//         {
+//             No: "",
+//             bookId: "",
+//             name: "",
+//             addtime: "",
+//         }
+//     ]
+// };
 
 router.get('/', function (req, res) {
     res.redirect('bookshelf/page/' + 1);
@@ -28,12 +28,13 @@ router.get('/', function (req, res) {
 router.get('/page/:page', function (req, res) {
     var page = req.params.page;
     var cookie = req.query;
-    cookie.loginCookie = "AQIC5wM2LY4SfcyFFs3PFvDYqX3%2foQxlWsyJYB2uS0bf60U%3d%40AAJTSQACMDE%3d%23";
+    var original_loginCookie = req.originalUrl.split("loginCookie=")[1].split("&")[0];
+    // cookie.loginCookie = "AQIC5wM2LY4SfcxyZZCOJTs3dbT%2fipAwEpuhaoPVtv8bCbU%3d%40AAJTSQACMDE%3d%23";
     var url = "http://smjslib.jmu.edu.cn/user/mybookshelf.aspx?page=" + page;
 
     //定制headers  //参考资料 https://www.npmjs.com/package/request
     var j = request.jar();
-    var loginCookie = request.cookie('iPlanetDirectoryPro=' + cookie.loginCookie);
+    var loginCookie = request.cookie('iPlanetDirectoryPro=' + original_loginCookie);
     j.setCookie(loginCookie, url);
 
     var options = {
@@ -44,6 +45,7 @@ router.get('/page/:page', function (req, res) {
             "Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6"
         }
     };
+    var _res = res;
     //如果loginCookie = "" 不执行request
     if (cookie.loginCookie != "") {
         request(options, function (err, res, body) {
@@ -59,6 +61,10 @@ router.get('/page/:page', function (req, res) {
                     //
                     //pageTotal
                     bookshelf.pageTotal = $("#ctl00_cpRight_Pagination2_gplbl2")['0'].children[0].data;
+                    if (page > bookshelf.pageTotal) {
+                        bookshelf.shelfStatus = "fail";
+                        bookshelf.shelfMsg = "BOOKSHELF_PAGE_NONE";
+                    }
                     //pageCurrent
                     bookshelf.pageCurrent = $("#ctl00_cpRight_Pagination2_dplbl2")['0'].children[0].data;
                     //shelfList
@@ -86,13 +92,14 @@ router.get('/page/:page', function (req, res) {
                 bookshelf.shelfStatus = "fail";
                 bookshelf.shelfMsg = "SEVER_ERROR";
             }
+            _res.jsonp(bookshelf);
         });
     } else {
         bookshelf.shelfStatus = "fail";
         bookshelf.shelfMsg = "USER_COOKIE_NULL";
+        // _res.jsonp(bookshelf);
     }
 
-    res.jsonp(bookshelf);
 });
 
 module.exports = router;

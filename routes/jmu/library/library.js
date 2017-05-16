@@ -5,18 +5,18 @@ var express = require('express');
 
 var router = express.Router();
 
-//
 var options = {
     url: "",
     headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.8 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36",
         "Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6"
     }
 };
 
 // Redirect
 router.get('/:keyword', function (req, res) {
-    res.redirect(req.params.keyword + '/page/' + 1 + '/count/' + 50);
+    var decodeKeyword = encodeURIComponent(req.params.keyword);
+    res.redirect(decodeKeyword + '/page/' + 1 + '/count/' + 50);
 });
 
 // Request
@@ -24,6 +24,8 @@ router.get('/:keyword', function (req, res) {
 router.get('/:keyword/page/:page/count/:count', function (req, res) {
     //Params the url
     var keyword = encodeToGb2312(req.params.keyword);
+    console.log("keyword", keyword);
+    console.log("param-keyword", req.params.keyword);
     var page = req.params.page;
     var count = req.params.count;
     var url = "http://smjslib.jmu.edu.cn/searchresult.aspx?anywords=" +
@@ -40,7 +42,7 @@ router.get('/:keyword/page/:page/count/:count', function (req, res) {
     options.url = url;
     var library = {};
     var _res = res;
-
+    //
     // library = {
     //     status = "",
     //     statusMsg = "",
@@ -69,7 +71,7 @@ router.get('/:keyword/page/:page/count/:count', function (req, res) {
             var $ = cherrio.load(body);
             var booksTotal = $('#ctl00_ContentPlaceHolder1_countlbl').text();
             // 1.1判断
-            if (booksTotal != "0") {
+            if ((booksTotal != "0") && (booksTotal != "")) {
                 library.status = "success";
                 library.statusMsg = "HAS_BOOK";
                 library.booksTotal = booksTotal;
@@ -88,7 +90,11 @@ router.get('/:keyword/page/:page/count/:count', function (req, res) {
                     book.No = elem.children[1].children[1].data;
                     book.bookId = elem.children[1].children[0].attribs.value;
                     book.name = elem.children[3].children[0].children[0].children[0].data;
-                    book.author = elem.children[5].children[0].data;
+                    try {
+                        book.author = elem.children[5].children[0].data;
+                    } catch (err) {
+                        book.author = "无作者信息";
+                    }
                     book.publisher = elem.children[7].children[0].data;
                     book.callNumber = elem.children[11].children[0].data;
                     book.total = elem.children[13].children[0].data;
